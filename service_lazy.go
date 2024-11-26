@@ -1,6 +1,8 @@
 package do
 
-import "sync"
+import (
+	"sync"
+)
 
 type Provider[T any] func(*Injector) (T, error)
 
@@ -23,10 +25,12 @@ func newServiceLazy[T any](name string, provider Provider[T]) Service[T] {
 	}
 }
 
+//nolint:unused
 func (s *ServiceLazy[T]) getName() string {
 	return s.name
 }
 
+//nolint:unused
 func (s *ServiceLazy[T]) getInstance(i *Injector) (T, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -41,6 +45,7 @@ func (s *ServiceLazy[T]) getInstance(i *Injector) (T, error) {
 	return s.instance, nil
 }
 
+//nolint:unused
 func (s *ServiceLazy[T]) build(i *Injector) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -89,11 +94,24 @@ func (s *ServiceLazy[T]) shutdown() error {
 
 	instance, ok := any(s.instance).(Shutdownable)
 	if ok {
-		return instance.Shutdown()
+		err := instance.Shutdown()
+		if err != nil {
+			return err
+		}
 	}
 
 	s.built = false
 	s.instance = empty[T]()
 
 	return nil
+}
+
+func (s *ServiceLazy[T]) clone() any {
+	// reset `build` flag and instance
+	return &ServiceLazy[T]{
+		name: s.name,
+
+		built:    false,
+		provider: s.provider,
+	}
 }

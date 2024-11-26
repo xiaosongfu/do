@@ -7,6 +7,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type lazyTest struct {
+	idx int
+	err error
+}
+
+func (t *lazyTest) Shutdown() error {
+	return t.err
+}
+
 func TestServiceLazyName(t *testing.T) {
 	is := assert.New(t)
 
@@ -87,4 +96,42 @@ func TestServiceLazyInstance(t *testing.T) {
 		expected := fmt.Errorf("error")
 		is.Equal(expected, err5)
 	})
+}
+
+func TestServiceLazyInstanceShutDown(t *testing.T) {
+	is := assert.New(t)
+
+	index := 1
+	provider1 := func(i *Injector) (*lazyTest, error) {
+		index++
+		return &lazyTest{index, nil}, nil
+	}
+	provider2 := func(i *Injector) (*lazyTest, error) {
+		index++
+		return &lazyTest{index, assert.AnError}, nil
+	}
+
+	i := New()
+
+	service1 := newServiceLazy("foobar", provider1)
+	instance1, err := service1.getInstance(i)
+	is.Nil(err)
+	is.True(service1.(*ServiceLazy[*lazyTest]).built)
+	err = service1.shutdown()
+	is.False(service1.(*ServiceLazy[*lazyTest]).built)
+	is.Nil(err)
+	instance2, err := service1.getInstance(i)
+	is.Nil(err)
+	is.NotEqual(instance1.idx, instance2.idx)
+	is.Equal(instance1.idx+1, instance2.idx)
+
+	service2 := newServiceLazy("foobar", provider2).(*ServiceLazy[*lazyTest])
+	is.False(service2.built)
+	is.Nil(err)
+	err = service2.build(i)
+	is.Nil(err)
+	is.True(service2.built)
+	err = service2.shutdown()
+	is.Error(assert.AnError, err)
+	is.True(service2.built)
 }
