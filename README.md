@@ -86,6 +86,9 @@ go get github.com/samber/do/v2@latest
 
 # v1
 go get github.com/samber/do@v1.6.0
+
+# AI Agent Skill
+npx skills add https://github.com/samber/cc-skills-golang --skill golang-samber-do
 ```
 
 This library is v2 and follows SemVer strictly.
