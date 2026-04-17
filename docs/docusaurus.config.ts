@@ -39,10 +39,10 @@ const config: Config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'samber', // Usually your GitHub org/user name.
   projectName: 'do', // Usually your repo name.
-  
+
   // Optional: deployment branch
   // deploymentBranch: 'gh-pages',
-  
+
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   onBrokenAnchors: 'throw',
@@ -56,11 +56,11 @@ const config: Config = {
 
   // Storage configuration for better performance
   staticDirectories: ['static'],
-  
+
   // Optional: Enable hash router for offline support (experimental)
   // Uncomment if you need offline browsing capability
   // router: 'hash',
-  
+
   // Future-proofing configurations
   clientModules: [
     require.resolve('./src/theme/prism-include-languages.js'),
@@ -213,7 +213,7 @@ const config: Config = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    
+
     // Mermaid configuration
     mermaid: {
       theme: {light: 'neutral', dark: 'dark'},
@@ -221,12 +221,12 @@ const config: Config = {
         maxTextSize: 50000,
       },
     },
-    
+
     // Enhanced metadata
     metadata: [
       {name: 'og:type', content: 'website'},
     ],
-    
+
     navbar: {
       title: '⚙️ samber/do',
       logo: {
@@ -382,12 +382,21 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 
   themes: ['@docusaurus/theme-mermaid'],
-  
-  plugins: [
-    // Add ideal image plugin for better image optimization
-    [
-      '@docusaurus/plugin-ideal-image',
-      {
+
+    plugins: [
+        [
+        "posthog-docusaurus",
+        {
+            apiKey: "phc_oP3YQLnt3fvhiBEaAU3rrmQdRNXGJM3hoM8j4oCSayrx",
+            appHost: "https://hogpost.samber.dev",
+            enableInDevelopment: false, // optional,
+            disableSessionRecording: true,
+        },
+    ],
+        // Add ideal image plugin for better image optimization
+        [
+        '@docusaurus/plugin-ideal-image',
+        {
         quality: 70,
         max: 1030,
         min: 640,
