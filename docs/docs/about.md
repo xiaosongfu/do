@@ -10,7 +10,7 @@ sidebar_position: 0
 
 This library implements the Dependency Injection design pattern. It may replace the fantastic `uber/dig` package. `samber/do` uses Go 1.18+ generics instead of reflection and therefore offers a type‑safe API.
 
-![image](/img/cover.png)
+![samber/do — type-safe dependency injection for Go using generics](/img/cover.png)
 
 **See also:**
 

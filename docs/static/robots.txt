@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Low-value pages — no need to crawl or index
+Disallow: /search
+Disallow: /tags/
+
+Sitemap: https://do.samber.dev/sitemap.xml

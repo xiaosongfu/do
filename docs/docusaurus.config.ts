@@ -135,13 +135,35 @@ const config: Config = {
         content: '@samuelberthe',
       },
     },
+    // twitter:site complements twitter:creator for card attribution
     {
-      tagName: 'link',
+      tagName: 'meta',
       attributes: {
-        rel: 'canonical',
-        href: 'https://do.samber.dev',
+        name: 'twitter:site',
+        content: '@samuelberthe',
       },
     },
+    // og:locale signals language/region to crawlers and social platforms
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:locale',
+        content: 'en_US',
+      },
+    },
+    // og:site_name provides branding context in social share cards
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:site_name',
+        content: 'samber/do',
+      },
+    },
+    // NOTE: do NOT add a global <link rel="canonical"> here.
+    // Docusaurus injects a correct per-page canonical automatically
+    // based on `url` + `baseUrl` + the page path. A static href here
+    // would override every page's canonical to the homepage, causing
+    // Google to treat all docs pages as non-canonical duplicates.
   ],
 
   customFields: {
@@ -185,7 +207,7 @@ const config: Config = {
           lastmod: 'date',
           changefreq: 'weekly',
           priority: 0.7,
-          ignorePatterns: ['/tags/**'],
+          ignorePatterns: ['/tags/**', '/search'],
           filename: 'sitemap.xml',
           // Enhanced sitemap features from 3.8+
           createSitemapItems: async (params) => {
@@ -232,8 +254,12 @@ const config: Config = {
     },
 
     // Enhanced metadata
+    // og:type defaults to "website"; individual doc pages that need
+    // "article" should override via their page's <Layout> or frontmatter.
     metadata: [
       {name: 'og:type', content: 'website'},
+      // Fallback description for pages that don't set their own
+      {name: 'description', content: 'Type-safe dependency injection for Go using generics. A drop-in replacement for uber/dig with a fluent API and zero reflection.'},
     ],
 
     navbar: {
