@@ -3,8 +3,8 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'do',
-  tagline: 'Type-safe dependency injection for Go',
+  title: 'samber/do — Go Dependency Injection',
+  tagline: 'Type-safe DI for Go using generics',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
